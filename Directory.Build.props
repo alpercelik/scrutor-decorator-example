@@ -1,0 +1,77 @@
+<Project>
+
+  <!--
+    Directory.Build.props
+    =====================
+    Properties declared here are inherited by EVERY project in this repository
+    (and in any sub-directory that does not define its own Directory.Build.props).
+    Keeping the shared build settings in one place means individual .csproj files
+    only declare what is genuinely unique about them.
+  -->
+
+  <!--
+    Artifacts output layout (.NET 8+)
+    =================================
+    Gathers bin/obj/publish/package output for EVERY project into one predictable
+    tree next to this file instead of a bin/ and obj/ folder per project:
+
+        artifacts/
+        ├── bin/<Project>/<pivot>/          e.g. bin/ScrutorExample.Api/debug
+        ├── obj/<Project>/<pivot>/          intermediate + generated files
+        ├── publish/<Project>/<pivot>/      dotnet publish output
+        └── package/<pivot>/                .nupkg output
+
+    <pivot> is the configuration plus TFM/RID when they apply (debug, release,
+    release_linux-x64, ...).
+
+    ArtifactsPath must be rooted at the Directory.Build.props location, and this
+    file must be the repository root's copy: a nested Directory.Build.props would
+    move the artifacts root down with it.
+  -->
+  <PropertyGroup>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Single source of truth for the target framework of the whole solution. -->
+    <TargetFramework>net10.0</TargetFramework>
+
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- Reproducible builds: no machine specific paths leak into the binaries. -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- Treat warnings as errors so the sample stays clean as it evolves. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+
+    <!-- Generates the XML docs next to each assembly; CS1591 (missing docs) is
+         suppressed because the sample intentionally documents behaviour, not
+         every single member. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!--
+      NU1900 is raised when the vulnerability data feed cannot be reached (offline
+      builds, restricted CI, sandboxed file systems). It says nothing about the
+      packages themselves, so it must not fail the build just because warnings are
+      treated as errors. Genuine advisories (NU1901-NU1904) are still reported.
+    -->
+    <NoWarn>$(NoWarn);CS1591;NU1900</NoWarn>
+
+    <!-- Nice-to-have metadata for the produced assemblies. -->
+    <Authors>scrutor-example</Authors>
+    <Product>Scrutor Example</Product>
+    <Version>1.0.0</Version>
+    <!--
+      SPDX identifier matching the LICENSE file in the repository root. NuGet
+      requires either this or PackageLicenseFile; using the expression means the
+      licence text does not have to be packed into every nupkg.
+    -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>

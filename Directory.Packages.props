@@ -1,0 +1,61 @@
+<Project>
+
+  <!--
+    Directory.Packages.props
+    ========================
+    Central Package Management (CPM).
+
+    Every NuGet package used anywhere in this repository is declared ONCE here
+    with its version. The individual .csproj files then reference packages
+    WITHOUT a Version attribute:
+
+        <PackageReference Include="Scrutor" />
+
+    This guarantees that the API, the console app and the shared library can
+    never drift onto different versions of the same dependency.
+  -->
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+    <!--
+      Also pin *transitive* dependencies to the versions declared below, wherever a
+      matching PackageVersion exists. The Microsoft.Extensions.* graph is shared by
+      Scrutor, the generic host and ASP.NET Core, so pinning it in one place keeps
+      every project on one consistent set of assemblies.
+    -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Assembly scanning + service decoration. -->
+    <PackageVersion Include="Scrutor" Version="7.0.0" />
+
+    <!--
+      The Microsoft.Extensions.* packages below are pinned to the .NET 10 GA patch
+      the repository was tested against. They are intentionally kept on the same
+      version as each other; bump them together.
+    -->
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.12" />
+
+    <!-- Generic host: DI container, configuration and logging for the console app. -->
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
+
+    <!-- Minimal API OpenAPI document generation. -->
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+
+    <!--
+      Scalar: interactive API reference UI on top of the OpenAPI document.
+      Ships a net10.0 target and has no package dependencies of its own.
+    -->
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.17.14" />
+  </ItemGroup>
+
+</Project>

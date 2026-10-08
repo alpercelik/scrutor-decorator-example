@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ScrutorExample.Api/ScrutorExample.Api.csproj" />
+    <Project Path="src/ScrutorExample.Console/ScrutorExample.Console.csproj" />
+    <Project Path="src/ScrutorExample.Core/ScrutorExample.Core.csproj" />
+  </Folder>
+  <Project Path="ScrutorExample.AppHost/ScrutorExample.AppHost.csproj" />
+</Solution>

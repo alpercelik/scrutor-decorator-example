@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ScrutorExample.Console</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScrutorExample.Core\ScrutorExample.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Generic host: DI container, configuration and logging for the console app. -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+  </ItemGroup>
+
+</Project>

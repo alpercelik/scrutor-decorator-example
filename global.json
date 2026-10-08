@@ -1,0 +1,17 @@
+{
+  "sdk": {
+    "version": "10.0.400",
+    "rollForward": "latestPatch"
+  },
+
+  "//msbuild-sdks": [
+    "MSBuild project SDK versions. NuGet packages are pinned in",
+    "Directory.Packages.props, but an <Project Sdk=\"...\"> attribute needs a version",
+    "before restore runs, so MSBuild SDKs are versioned here instead. The AppHost",
+    "references Aspire.AppHost.Sdk *without* a version, and the number lives only",
+    "in this file - upgrade Aspire by editing this one line."
+  ],
+  "msbuild-sdks": {
+    "Aspire.AppHost.Sdk": "13.6.1"
+  }
+}

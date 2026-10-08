@@ -1,0 +1,28 @@
+<Project>
+
+  <!--
+    Directory.Build.targets
+    =======================
+    Targets that run after the SDK's own targets, for every project in the repo.
+
+    Central Package Management already fails the build (NU1010) when a
+    PackageReference has no matching PackageVersion. This target closes the gap in
+    the other direction: a stray Version="..." attribute on a PackageReference
+    would silently override the central version, so it is rejected explicitly.
+  -->
+
+  <Target Name="ValidateNoLocalPackageVersions" BeforeTargets="CollectPackageReferences">
+    <ItemGroup>
+      <_PackageReferenceWithVersion
+        Include="@(PackageReference)"
+        Condition="'%(PackageReference.Version)' != ''" />
+      <_OffendingPackage Include="@(_PackageReferenceWithVersion -> '%(Identity) %(Version)')" />
+    </ItemGroup>
+
+    <Error
+      Condition="'@(_OffendingPackage)' != ''"
+      Code="CPM001"
+      Text="PackageReference(s) with a local Version: @(_OffendingPackage, ', '). All versions must be declared once in Directory.Packages.props (Central Package Management)." />
+  </Target>
+
+</Project>

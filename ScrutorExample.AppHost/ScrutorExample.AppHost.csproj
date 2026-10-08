@@ -1,0 +1,23 @@
+<Project Sdk="Aspire.AppHost.Sdk">
+
+  <!--
+    The Aspire SDK version is deliberately NOT pinned in this Sdk attribute. It
+    lives in global.json's "msbuild-sdks" section, next to the .NET SDK pin, so
+    every version in this repository is managed in a central file. Upgrade Aspire
+    by editing that one line.
+
+    Aspire.Hosting.AppHost (13.6.1) is pulled in by the SDK itself and is also
+    pinned transitively through Directory.Packages.props, which is why the
+    Microsoft.Extensions.* versions there must not fall below what Aspire needs.
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AspireUseCliBundle>true</AspireUseCliBundle>
+    <UserSecretsId>374cfc75-2dbe-41c9-bb9b-09d28b5a0861</UserSecretsId>
+  </PropertyGroup>
+
+</Project>
